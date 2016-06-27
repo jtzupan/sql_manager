@@ -2,7 +2,7 @@ SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED
 
 /*
 SUMMARY: this is all new <end>
-KEYWORDS: purchase, closing, 2016<end>
+KEYWORDS: purchase, closing, 2016, query, index<end>
 */
 
 
