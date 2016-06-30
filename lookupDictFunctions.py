@@ -6,7 +6,7 @@ Created on Tue Jun 21 22:09:39 2016
 """
 
 import sqlite3
-import operator
+#import operator
 
 def createDictionary():
     '''
@@ -36,7 +36,7 @@ def createDictionary():
     return masterDict
     
     
-def returnQueryResults(searchTerms, masterDict):
+def returnSearchResults(searchTerms, masterDict):
     '''
     '''
     searchTermsList = searchTerms.upper().split(' ')
@@ -51,7 +51,31 @@ def returnQueryResults(searchTerms, masterDict):
     returnDict = {}
     for index in masterList:
         returnDict[index] = returnDict.get(index, 0) + 1
+    
+    sortedReturnList = sorted(returnDict.items(), key = lambda x: x[1])[-5:]
         
-    return returnDict
+        
+    return sortedReturnList
+    
+def returnQueryResults(sortedList):
+    '''
+    '''
+    conn = sqlite3.connect('IndexDB.sqlite')
+    cur = conn.cursor()
+       
+    for i in sortedList:
+        tableID = i[0]
+        cur.execute('''SELECT Summary
+                                 ,FileName
+                                 ,FileLocation
+                        FROM queryIndex
+                        WHERE ID = ?''',(tableID,))
+        queryResults = str(cur.fetchall()[0]).split(',')
+        print 'Query name: ' + str(queryResults[1]).strip('u')
+        print 'Query locations: ' + str(queryResults[2]).strip(')')
+        print 'Query summary: ' + str(queryResults[0]).strip('(')
+        print
+        print
+    return 'Printed top 5 results'
         
    
